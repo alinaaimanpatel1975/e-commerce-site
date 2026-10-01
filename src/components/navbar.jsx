@@ -2,7 +2,7 @@
 // Props allow a parent component to send information to a child component.
 import React from "react";
 import { Link } from "react-router-dom";
-function Navbar({ cartCount }) {
+function Navbar({ cartCount, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory }) {
   return (
     <header className="navbar">
 
@@ -15,10 +15,11 @@ function Navbar({ cartCount }) {
         <div className="search-container">
 
           <input
-            type="text"
-            placeholder="Search products..."
-          />
-
+  type="text"
+  placeholder="Search products..."
+  value={searchTerm}
+  onChange={(event) => setSearchTerm(event.target.value)}
+/>
           <button>🔍</button>
 
         </div>
@@ -27,7 +28,14 @@ function Navbar({ cartCount }) {
 
           <span>Account</span>
 
-          <span>Orders</span>
+<span>Orders</span>
+
+<Link
+  to="/wishlist"
+  className="wishlist-link"
+>
+  ♥ Wishlist
+</Link>
 
           {/* 
             cartCount comes from App.jsx.
@@ -43,15 +51,70 @@ function Navbar({ cartCount }) {
       </div>
 
       <div className="category-bar">
-        <span>☰ All</span>
-        <span>Electronics</span>
-        <span>Fashion</span>
-        <span>Beauty</span>
-        <span>Home</span>
-        <span>Gaming</span>
-        <span>Books</span>
-        <span>Sports</span>
-      </div>
+
+  {/* 
+    When a category is clicked,
+    setSelectedCategory() updates the state
+    inside App.jsx.
+  */}
+
+  <span
+    className={selectedCategory === "All" ? "active-category" : ""}
+    onClick={() => setSelectedCategory("All")}
+  >
+    ☰ All
+  </span>
+
+  <span
+    className={selectedCategory === "Electronics" ? "active-category" : ""}
+    onClick={() => setSelectedCategory("Electronics")}
+  >
+    Electronics
+  </span>
+
+  <span
+    className={selectedCategory === "Fashion" ? "active-category" : ""}
+    onClick={() => setSelectedCategory("Fashion")}
+  >
+    Fashion
+  </span>
+
+  <span
+    className={selectedCategory === "Beauty" ? "active-category" : ""}
+    onClick={() => setSelectedCategory("Beauty")}
+  >
+    Beauty
+  </span>
+
+  <span
+    className={selectedCategory === "Home" ? "active-category" : ""}
+    onClick={() => setSelectedCategory("Home")}
+  >
+    Home
+  </span>
+
+  <span
+    className={selectedCategory === "Gaming" ? "active-category" : ""}
+    onClick={() => setSelectedCategory("Gaming")}
+  >
+    Gaming
+  </span>
+
+  <span
+    className={selectedCategory === "Books" ? "active-category" : ""}
+    onClick={() => setSelectedCategory("Books")}
+  >
+    Books
+  </span>
+
+  <span
+    className={selectedCategory === "Sports" ? "active-category" : ""}
+    onClick={() => setSelectedCategory("Sports")}
+  >
+    Sports
+  </span>
+
+</div>
 
     </header>
   )

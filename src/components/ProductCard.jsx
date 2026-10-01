@@ -1,51 +1,60 @@
-
-// product and addToCart are both props coming from App.jsx.
-//
-// product = information about the product
-// addToCart = function that allows this component to add the product to the cart
 import React from "react";
-function ProductCard({ product, addToCart }) {
+import { Link } from "react-router-dom";
+
+function ProductCard({
+  product,
+  addToCart,
+  wishlist,
+  toggleWishlist
+}) {
+
+  // Check whether this product is already
+  // inside the wishlist.
+  const isWishlisted = wishlist.some(
+    (item) => item.id === product.id
+  );
+
   return (
     <div className="product-card">
 
-      <div className="product-image">
-        🛍️
-      </div>
+      {/* Wishlist button */}
 
-      {/* 
-        We use dot notation to access a value
-        inside the product object.
+      <button
+        className="wishlist-button"
+        onClick={() => toggleWishlist(product)}
+      >
+        {isWishlisted ? "♥" : "♡"}
+      </button>
 
-        product.category means:
-        "Give me the category of this product."
-      */}
-      <p className="product-category">
-        {product.category}
-      </p>
+      {/* Product information */}
 
-      <h2>{product.name}</h2>
+      <Link
+        to={`/product/${product.id}`}
+        className="product-link"
+      >
 
-      <p className="product-rating">
-        ⭐ {product.rating}
-      </p>
+        <div className="product-image">
+          🛍️
+        </div>
 
-      <p className="product-price">
-        ₹{product.price}
-      </p>
+        <p className="product-category">
+          {product.category}
+        </p>
+
+        <h2>{product.name}</h2>
+
+        <p className="product-rating">
+          ⭐ {product.rating}
+        </p>
+
+        <p className="product-price">
+          ₹{product.price}
+        </p>
+
+      </Link>
 
       <button
         className="add-to-cart"
-
-        /*
-          onClick is a React event.
-
-          It means:
-          "When the user clicks this button,
-          run this function."
-
-          () => addToCart(product)
-          sends THIS particular product to App.jsx.
-        */
         onClick={() => addToCart(product)}
       >
         Add to Cart
