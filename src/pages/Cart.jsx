@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Cart({
   cart,
@@ -8,6 +9,9 @@ function Cart({
   decreaseQuantity,
   removeFromCart
 }) {
+
+  const navigate = useNavigate();
+
   return (
     <main className="cart-page">
 
@@ -96,10 +100,11 @@ function Cart({
     Subtotal: ₹{cartTotal}
   </p>
 
-  <button>
-    Proceed to Checkout
-  </button>
-
+<button
+  onClick={() => navigate("/checkout")}
+>
+  Proceed to Checkout
+</button>
 </div>
 
         </div>

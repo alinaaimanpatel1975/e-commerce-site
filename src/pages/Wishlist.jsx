@@ -74,8 +74,11 @@ function Wishlist({
               >
 
                 <div className="wishlist-image">
-                  🛍️
-                </div>
+  <img
+    src={product.image}
+    alt={product.name}
+  />
+</div>
 
                 <p className="product-category">
                   {product.category}

@@ -34,8 +34,11 @@ function ProductCard({
       >
 
         <div className="product-image">
-          🛍️
-        </div>
+  <img
+    src={product.image}
+    alt={product.name}
+  />
+</div>
 
         <p className="product-category">
           {product.category}

@@ -8,7 +8,11 @@ import React, { useState, useEffect } from "react";
 // BrowserRouter = enables page navigation
 // Routes = holds all our routes
 // Route = defines an individual URL
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
 
 import Navbar from "./components/navbar";
 import ProductCard from "./components/ProductCard";
@@ -16,6 +20,13 @@ import Cart from "./pages/Cart";
 import ProductDetails from "./pages/ProductDetails";
 import products from "./data/product";
 import Wishlist from "./pages/Wishlist";
+import Account from "./pages/Account";
+import Orders from "./pages/Orders";
+import Checkout from "./pages/Checkout";
+import NotFound from "./pages/NotFound";
+import headphonesImage from "./assets/headphones.jpg";
+import keyboardImage from "./assets/keyboard.jpg";
+import tshirtImage from "./assets/tshirt.jpg";
 
 function App() {
 
@@ -57,7 +68,17 @@ const [wishlist, setWishlist] = useState(() => {
     ? JSON.parse(savedWishlist)
     : [];
 });
+/*
+  orders stores products that the user
+  has already purchased.
 
+  We load previous orders from localStorage
+  so they don't disappear after refreshing.
+*/
+const [orders, setOrders] = useState(() => {
+  const savedOrders = localStorage.getItem("shopora-orders");
+  return savedOrders ? JSON.parse(savedOrders) : [];
+});
 /*
   Whenever the cart changes,
   save the new cart to localStorage.
@@ -83,6 +104,13 @@ useEffect(() => {
   );
 
 }, [wishlist]);
+
+useEffect(() => {
+  localStorage.setItem(
+    "shopora-orders",
+    JSON.stringify(orders)
+  );
+}, [orders]);
 
   // Calculate the total number of individual products
 // currently inside the cart.
@@ -293,6 +321,35 @@ function toggleWishlist(product) {
   }
 }
 
+/*
+  Move the current cart into our order history.
+
+  The cart contains the products the user
+  is currently buying.
+
+  Once the order is placed, we save it
+  inside the orders array.
+*/
+function placeOrder() {
+  const newOrder = {
+    id: Date.now(),
+    items: cart,
+    total: cartTotal,
+    date: new Date().toLocaleDateString(),
+  };
+
+  setOrders([
+    ...orders,
+    newOrder
+  ]);
+
+  // Empty the cart after the order is placed.
+  setCart([]);
+
+  // We return the new order so another component
+  // can handle navigation.
+  return newOrder;
+}
   return (
 
     // BrowserRouter allows React to change
@@ -317,60 +374,186 @@ function toggleWishlist(product) {
           path="/"
           element={
 
-            <main className="products-section">
+            <main className="home-page">
 
-              <h1>Featured Products</h1>
+  {/* 
+    HERO SECTION
+    This is the first major section users see.
+    It gives the homepage a strong visual identity
+    before showing the products.
+  */}
 
-              {/* SORTING */}
-              <div className="sort-container">
+  <section className="hero-section">
 
-                <label htmlFor="sort">
-                  Sort By:
-                </label>
+    <div className="hero-content">
 
-                <select
-                  id="sort"
-                  value={sortOption}
-                  onChange={(event) =>
-                    setSortOption(event.target.value)
-                  }
-                >
-                  <option value="default">
-                    Default
-                  </option>
+      <p className="hero-label">
+        CURATED FOR EVERYDAY
+      </p>
 
-                  <option value="price-low">
-                    Price: Low → High
-                  </option>
+      <h1>
+        Everything you want.
+        <br />
+        One beautiful place.
+      </h1>
 
-                  <option value="price-high">
-                    Price: High → Low
-                  </option>
+      <p className="hero-description">
+        Discover carefully selected products across
+        fashion, technology, beauty, home and more.
+      </p>
 
-                  <option value="rating-high">
-                    Rating: High → Low
-                  </option>
-                </select>
+      <div className="hero-buttons">
 
-              </div>
+        <button
+          className="hero-primary-button"
+          onClick={() => {
+            setSelectedCategory("All");
+            window.scrollTo({
+              top: 600,
+              behavior: "smooth"
+            });
+          }}
+        >
+          Shop Now
+        </button>
 
-              {/* PRODUCT GRID */}
-              <div className="product-grid">
+        <button
+          className="hero-secondary-button"
+          onClick={() => {
+            setSelectedCategory("Fashion");
+            window.scrollTo({
+              top: 600,
+              behavior: "smooth"
+            });
+          }}
+        >
+          Explore Fashion
+        </button>
 
-                {sortedProducts.map((product) => (
+      </div>
 
-                  <ProductCard
-  key={product.id}
-  product={product}
-  addToCart={addToCart}
-  wishlist={wishlist}
-  toggleWishlist={toggleWishlist}
-/>
-                ))}
+    </div>
 
-              </div>
+    <div className="hero-visual">
 
-            </main>
+  <div className="hero-product hero-product-one">
+    <img
+      src={tshirtImage}
+      alt="Oversized Cotton T-Shirt"
+    />
+
+    <div className="hero-product-info">
+      <span>FASHION</span>
+      <strong>Everyday Style</strong>
+    </div>
+  </div>
+
+
+  <div className="hero-product hero-product-two">
+    <img
+      src={headphonesImage}
+      alt="Wireless Headphones"
+    />
+
+    <div className="hero-product-info">
+      <span>ELECTRONICS</span>
+      <strong>Smart Essentials</strong>
+    </div>
+  </div>
+
+
+  <div className="hero-product hero-product-three">
+    <img
+      src={keyboardImage}
+      alt="Mechanical Gaming Keyboard"
+    />
+
+    <div className="hero-product-info">
+      <span>GAMING</span>
+      <strong>Level Up</strong>
+    </div>
+  </div>
+
+</div>
+
+  </section>
+
+
+  {/* 
+    PRODUCTS SECTION
+    Our existing search, category filtering
+    and sorting continue working exactly as before.
+  */}
+
+  <section className="products-section">
+
+    <div className="products-heading">
+
+      <div>
+        <p className="section-label">
+          SHOPORA COLLECTION
+        </p>
+
+        <h2>
+          Featured Products
+        </h2>
+      </div>
+
+      <div className="sort-container">
+
+        <label htmlFor="sort">
+          Sort By:
+        </label>
+
+        <select
+          id="sort"
+          value={sortOption}
+          onChange={(event) =>
+            setSortOption(event.target.value)
+          }
+        >
+          <option value="default">
+            Default
+          </option>
+
+          <option value="price-low">
+            Price: Low → High
+          </option>
+
+          <option value="price-high">
+            Price: High → Low
+          </option>
+
+          <option value="rating-high">
+            Rating: High → Low
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <div className="product-grid">
+
+      {sortedProducts.map((product) => (
+
+        <ProductCard
+          key={product.id}
+          product={product}
+          addToCart={addToCart}
+          wishlist={wishlist}
+          toggleWishlist={toggleWishlist}
+        />
+
+      ))}
+
+    </div>
+
+  </section>
+
+</main>
 
           }
         />
@@ -411,7 +594,38 @@ function toggleWishlist(product) {
     />
   }
 />
+{/* ACCOUNT PAGE */}
+<Route
+  path="/account"
+  element={<Account />}
+/>
 
+{/* ORDERS PAGE */}
+<Route
+  path="/orders"
+  element={
+    <Orders
+      orders={orders}
+    />
+  }
+/>
+
+{/* CHECKOUT PAGE */}
+<Route
+  path="/checkout"
+  element={
+    <Checkout
+      cart={cart}
+      cartTotal={cartTotal}
+      placeOrder={placeOrder}
+    />
+  }
+/>
+{/* 404 PAGE */}
+<Route
+  path="*"
+  element={<NotFound />}
+/>
       </Routes>
 
     </BrowserRouter>

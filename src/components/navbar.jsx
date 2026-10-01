@@ -1,8 +1,13 @@
 // cartCount is a prop coming from App.jsx.
 // Props allow a parent component to send information to a child component.
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function Navbar({ cartCount, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory }) {
+  const navigate = useNavigate();
+  function handleCategoryClick(category) {
+  setSelectedCategory(category);
+  navigate("/");
+}
   return (
     <header className="navbar">
 
@@ -26,9 +31,19 @@ function Navbar({ cartCount, searchTerm, setSearchTerm, selectedCategory, setSel
 
         <div className="navbar-actions">
 
-          <span>Account</span>
+          <Link
+  to="/account"
+  className="account-link"
+>
+  Account
+</Link>
 
-<span>Orders</span>
+<Link
+  to="/orders"
+  className="orders-link"
+>
+  Orders
+</Link>
 
 <Link
   to="/wishlist"
@@ -59,60 +74,60 @@ function Navbar({ cartCount, searchTerm, setSearchTerm, selectedCategory, setSel
   */}
 
   <span
-    className={selectedCategory === "All" ? "active-category" : ""}
-    onClick={() => setSelectedCategory("All")}
-  >
-    ☰ All
-  </span>
+  className={selectedCategory === "All" ? "active-category" : ""}
+  onClick={() => handleCategoryClick("All")}
+>
+  ☰ All
+</span>
 
-  <span
-    className={selectedCategory === "Electronics" ? "active-category" : ""}
-    onClick={() => setSelectedCategory("Electronics")}
-  >
-    Electronics
-  </span>
+<span
+  className={selectedCategory === "Electronics" ? "active-category" : ""}
+  onClick={() => handleCategoryClick("Electronics")}
+>
+  Electronics
+</span>
 
-  <span
-    className={selectedCategory === "Fashion" ? "active-category" : ""}
-    onClick={() => setSelectedCategory("Fashion")}
-  >
-    Fashion
-  </span>
+<span
+  className={selectedCategory === "Fashion" ? "active-category" : ""}
+  onClick={() => handleCategoryClick("Fashion")}
+>
+  Fashion
+</span>
 
-  <span
-    className={selectedCategory === "Beauty" ? "active-category" : ""}
-    onClick={() => setSelectedCategory("Beauty")}
-  >
-    Beauty
-  </span>
+<span
+  className={selectedCategory === "Beauty" ? "active-category" : ""}
+  onClick={() => handleCategoryClick("Beauty")}
+>
+  Beauty
+</span>
 
-  <span
-    className={selectedCategory === "Home" ? "active-category" : ""}
-    onClick={() => setSelectedCategory("Home")}
-  >
-    Home
-  </span>
+<span
+  className={selectedCategory === "Home" ? "active-category" : ""}
+  onClick={() => handleCategoryClick("Home")}
+>
+  Home
+</span>
 
-  <span
-    className={selectedCategory === "Gaming" ? "active-category" : ""}
-    onClick={() => setSelectedCategory("Gaming")}
-  >
-    Gaming
-  </span>
+<span
+  className={selectedCategory === "Gaming" ? "active-category" : ""}
+  onClick={() => handleCategoryClick("Gaming")}
+>
+  Gaming
+</span>
 
-  <span
-    className={selectedCategory === "Books" ? "active-category" : ""}
-    onClick={() => setSelectedCategory("Books")}
-  >
-    Books
-  </span>
+<span
+  className={selectedCategory === "Books" ? "active-category" : ""}
+  onClick={() => handleCategoryClick("Books")}
+>
+  Books
+</span>
 
-  <span
-    className={selectedCategory === "Sports" ? "active-category" : ""}
-    onClick={() => setSelectedCategory("Sports")}
-  >
-    Sports
-  </span>
+<span
+  className={selectedCategory === "Sports" ? "active-category" : ""}
+  onClick={() => handleCategoryClick("Sports")}
+>
+  Sports
+</span>
 
 </div>
 
